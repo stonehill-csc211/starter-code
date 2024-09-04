@@ -5,8 +5,11 @@ public class main{
         /*
          * Returns the largest integer value of N such that f.call(N) < k
          */
-        // TODO
-        return 0;
+        int n = 0;
+        while(f.call(n) < k){
+            n++;
+        }
+        return n-1;
     }
 
     public static void main(String[] args){
@@ -15,5 +18,11 @@ public class main{
         int k = 27;
         int n = largestN(k, f);
         System.out.println("Output: " + n);
+
+        System.out.println("Testing on MysteryFunction3:");
+        MysteryFunction3 g = new MysteryFunction3();
+        int k_3 = 10000;
+        int n_3 = largestN(k_3, g);
+        System.out.println("Output: " + n_3);
     }
 }
