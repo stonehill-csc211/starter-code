@@ -5,11 +5,23 @@ public class main{
         /*
          * Returns the largest integer value of N such that f.call(N) < k
          */
-        int n = 0;
-        while(f.call(n) < k){
-            n++;
+        long upperBound = 1;
+        while(f.call((int)upperBound) < k){
+            upperBound*=2;
         }
-        return n-1;
+        long lowerBound = upperBound / 2;
+        while( upperBound - lowerBound > 1){
+            System.out.println(lowerBound + " " + upperBound);
+            long middle = (lowerBound + upperBound) / 2;
+            if(f.call((int)middle) < k){
+                lowerBound = middle;
+            } else if(f.call((int)middle) == k){
+                break;
+            } else {
+                upperBound = middle;
+            }
+        }
+        return (int)lowerBound;
     }
 
     public static void main(String[] args){
