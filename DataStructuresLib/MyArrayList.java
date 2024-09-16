@@ -87,8 +87,8 @@ public class MyArrayList<T> extends MyList<T> {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clear'");
+        this.end = 0;
+        this.data = new Object[10];
     }
 
     @SuppressWarnings("unchecked")
