@@ -44,7 +44,33 @@ public class MyLinkedList<T> extends MyList<T>{
 
     @Override
     void add(T value, int position) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        /*
+         * adds a new element at the specified position
+         */
+        // if adding to the start
+        if(position == 0){
+            Node<T> after = this.start;
+            Node<T> newNode = new Node<T>();
+            newNode.data = value;
+            // change start to the new node
+            this.start = newNode;
+            // set the next node to the old start
+            newNode.next = after;
+            this.size++;
+        } else if(position == this.size){
+            // if we're adding to the end, call the other add method
+            this.add(value);
+        } else {
+            // insert between position-1 and position
+            Node<T> before = getNode(position - 1);
+            Node<T> after = before.next;
+            Node<T> newNode = new Node<T>();
+            newNode.data = value;
+
+            before.next = newNode;
+            newNode.next = after;
+            this.size++;
+        }
     }
 
     @Override
@@ -75,7 +101,7 @@ public class MyLinkedList<T> extends MyList<T>{
 
     @Override
     void set(int position, T newValue) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        getNode(position).data = newValue;
     }
 
     @Override
@@ -83,9 +109,20 @@ public class MyLinkedList<T> extends MyList<T>{
         return this.size;
     }
 
+    private boolean sublistContains(T value, Node n){
+        /*
+         * A recursive method to find an element at or after node n
+         * This runs in O(n)
+         */
+        if(n.data == value) return true;
+        else if(n.next == null) return false;
+        else return sublistContains(value, n.next);
+
+    }
+
     @Override
     boolean contains(T value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return sublistContains(value, this.start);
     }
 
     @Override
@@ -103,8 +140,10 @@ public class MyLinkedList<T> extends MyList<T>{
         ll.add(2);
         ll.add(1);
         ll.add(4);
-        ll.remove(1);
-        System.out.println(ll.get(1));
+        //ll.remove(1);
+        //System.out.println(ll.get(1));
+        System.out.println(ll.contains(4));
+        System.out.println(ll.contains(5));
     }
 
 }
