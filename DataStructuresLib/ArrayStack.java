@@ -43,4 +43,20 @@ public class ArrayStack<T> extends MyStack<T>{
     public int size(){
         return this.end;
     }
+
+    public void pushAll(T[] newValues){
+        for(int i = 0; i < newValues.length; i++){
+            this.push(newValues[i]);
+        }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < this.end; i++){
+            sb.append(this.data[i].toString());
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
 }
