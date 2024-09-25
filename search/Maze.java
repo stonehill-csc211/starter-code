@@ -88,6 +88,7 @@ public class Maze {
         /*
          * Use a search algorithm to solve the maze
          * Returns an array of squares from start to end
+         * This solution is DFS using a stack. Try it with a queue!
          * O( )
          */
         ArrayStack<Square> stack = new ArrayStack<Square>();
