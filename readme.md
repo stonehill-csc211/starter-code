@@ -6,6 +6,9 @@ Over the course of the semester, I will write code in this project if I want you
 
 DataStructuresLib Classes (graded at the end of the semester):
 * MyArrayList
+* MyLinkedList
+* ArrayStack
 
 Ungraded in-class activities:
 * MysteryFunction
+* BalancedParens
