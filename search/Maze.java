@@ -1,8 +1,13 @@
 package search;
 
+import java.util.LinkedList;
 import java.util.Scanner;
+
+import DataStructuresLib.ArrayStack;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class Maze {
 
@@ -13,17 +18,24 @@ public class Maze {
         int x;
         int y;
         boolean wall;
+        Square previous;
 
         private Square(){
             this.x = -1;
             this.y = -1;
             this.wall = false;
+            this.previous = null;
         }
 
         private Square(int x, int y, boolean wall){
             this.x = x;
             this.y = y;
             this.wall = wall;
+            this.previous = null;
+        }
+
+        public String toString(){
+            return "Square(" + this.x + " " + this.y + ")";
         }
     }
     public Maze(String filename) throws FileNotFoundException{
@@ -78,16 +90,58 @@ public class Maze {
          * Returns an array of squares from start to end
          * O( )
          */
-
-        // TODO
-
+        ArrayStack<Square> stack = new ArrayStack<Square>();
+        stack.push(this.start);
+        Square current, up, left, right, down;
+        while(stack.size() > 0){
+            System.out.println(stack);
+            current = stack.pop();
+            // explore up
+            up = this.squares[current.x-1][current.y];
+            if(!up.wall && up.previous == null){
+                up.previous = current;
+                stack.push(up);
+            }
+            down = this.squares[current.x+1][current.y];
+            if(!down.wall && down.previous == null){
+                down.previous = current;
+                stack.push(down);
+            }
+            left = this.squares[current.x][current.y-1];
+            if(!left.wall && left.previous == null){
+                left.previous = current;
+                stack.push(left);
+            }
+            right = this.squares[current.x][current.y+1];
+            if(!right.wall && right.previous == null){
+                right.previous = current;
+                stack.push(right);
+            }
+            // if we've found the end return something probably
+            if(current.equals(this.end)){
+                LinkedList<Square> solution = new LinkedList<Square>();
+                while(!current.equals(this.start)){
+                    solution.addFirst(current);
+                    current = current.previous;
+                }
+                Square[] arr = new Square[solution.size()];
+                for(int i = 0; i < arr.length; i++){
+                    arr[i] = (Square)solution.get(i);
+                }
+                return arr;
+            }
+        }
         return null;
     }
 
     public static void main(String[] args){
         try{
-            Maze m = new Maze("/Users/sgoree/csc_211_repos/csc211_prep/search/maze1.txt");
-            System.out.println(m);
+            Maze m = new Maze("C:\\Users\\sgoree\\csc211\\starter-code\\search\\maze1.txt");
+            Square[] solution = m.solve();
+            System.out.println("Solution:");
+            for(int i = 0; i < solution.length; i++){
+                System.out.println(solution[i]);
+            }
         } catch(FileNotFoundException e){
             System.out.println(e);
         }

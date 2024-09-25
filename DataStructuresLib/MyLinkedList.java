@@ -26,7 +26,7 @@ public class MyLinkedList<T> extends MyList<T>{
     }
 
     @Override
-    void add(T value) {
+    public void add(T value) {
         Node<T> nodeToAdd = new Node<T>();
         nodeToAdd.data = value;
 
@@ -43,7 +43,7 @@ public class MyLinkedList<T> extends MyList<T>{
     }
 
     @Override
-    void add(T value, int position) {
+    public void add(T value, int position) {
         /*
          * adds a new element at the specified position
          */
@@ -74,7 +74,7 @@ public class MyLinkedList<T> extends MyList<T>{
     }
 
     @Override
-    T remove(int position) {
+    public T remove(int position) {
         Node<T> toRemove;
         if(position == 0){
             toRemove = this.start;
@@ -95,17 +95,17 @@ public class MyLinkedList<T> extends MyList<T>{
     }
 
     @Override
-    T get(int position) {
+    public T get(int position) {
         return getNode(position).data;
     }
 
     @Override
-    void set(int position, T newValue) {
+    public void set(int position, T newValue) {
         getNode(position).data = newValue;
     }
 
     @Override
-    int size() {
+    public int size() {
         return this.size;
     }
 
@@ -121,17 +121,17 @@ public class MyLinkedList<T> extends MyList<T>{
     }
 
     @Override
-    boolean contains(T value) {
+    public boolean contains(T value) {
         return sublistContains(value, this.start);
     }
 
     @Override
-    boolean isEmpty() {
+    public boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    void clear() {
+    public void clear() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
