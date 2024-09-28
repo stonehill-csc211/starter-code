@@ -12,3 +12,4 @@ DataStructuresLib Classes (graded at the end of the semester):
 Ungraded in-class activities:
 * MysteryFunction
 * BalancedParens
+* Search (mazes)
