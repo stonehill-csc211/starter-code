@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import DataStructuresLib.ArrayStack;
+import DataStructuresLib.LinkedQueue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class Maze {
 
@@ -84,7 +84,58 @@ public class Maze {
         return sb.toString();
     }
 
-    public Square[] solve(){
+    public Square[] solveBFS(){
+        /*
+         * Use a search algorithm to solve the maze
+         * Returns an array of squares from start to end
+         * This solution is DFS using a stack. Try it with a queue!
+         * O( )
+         */
+        LinkedQueue<Square> queue = new LinkedQueue<Square>();
+        queue.enqueue(this.start);
+        Square current, up, left, right, down;
+        while(queue.size() > 0){
+            System.out.println(queue);
+            current = queue.dequeue();
+            // explore up
+            up = this.squares[current.x-1][current.y];
+            if(!up.wall && up.previous == null){
+                up.previous = current;
+                queue.enqueue(up);
+            }
+            down = this.squares[current.x+1][current.y];
+            if(!down.wall && down.previous == null){
+                down.previous = current;
+                queue.enqueue(down);
+            }
+            left = this.squares[current.x][current.y-1];
+            if(!left.wall && left.previous == null){
+                left.previous = current;
+                queue.enqueue(left);
+            }
+            right = this.squares[current.x][current.y+1];
+            if(!right.wall && right.previous == null){
+                right.previous = current;
+                queue.enqueue(right);
+            }
+            // if we've found the end return something probably
+            if(current.equals(this.end)){
+                LinkedList<Square> solution = new LinkedList<Square>();
+                while(!current.equals(this.start)){
+                    solution.addFirst(current);
+                    current = current.previous;
+                }
+                Square[] arr = new Square[solution.size()];
+                for(int i = 0; i < arr.length; i++){
+                    arr[i] = (Square)solution.get(i);
+                }
+                return arr;
+            }
+        }
+        return null;
+    }
+
+    public Square[] solveDFS(){
         /*
          * Use a search algorithm to solve the maze
          * Returns an array of squares from start to end
@@ -138,7 +189,7 @@ public class Maze {
     public static void main(String[] args){
         try{
             Maze m = new Maze("C:\\Users\\sgoree\\csc211\\starter-code\\search\\maze1.txt");
-            Square[] solution = m.solve();
+            Square[] solution = m.solveBFS();
             System.out.println("Solution:");
             for(int i = 0; i < solution.length; i++){
                 System.out.println(solution[i]);
