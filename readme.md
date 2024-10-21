@@ -8,6 +8,8 @@ DataStructuresLib Classes (graded at the end of the semester):
 * MyArrayList
 * MyLinkedList
 * ArrayStack
+* LinkedQueue
+* BinarySearchTree
 
 Ungraded in-class activities:
 * MysteryFunction
