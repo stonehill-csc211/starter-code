@@ -10,8 +10,11 @@ DataStructuresLib Classes (graded at the end of the semester):
 * ArrayStack
 * LinkedQueue
 * BinarySearchTree
+* TreeMap
 
 Ungraded in-class activities:
 * MysteryFunction
 * BalancedParens
 * Search (mazes)
+* Binary Search Tree intersection
+* 
