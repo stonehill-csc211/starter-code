@@ -1,11 +1,41 @@
 package DataStructuresLib;
 
-public class BinarySearchTree<T extends Comparable<T>>{
+import java.util.Iterator;
+
+public class BinarySearchTree<T extends Comparable<T>> implements Iterable{
 
     T data;
     BinarySearchTree<T> left;
     BinarySearchTree<T> right;
     BinarySearchTree<T> parent;
+
+    private class TreeIterator implements Iterator{
+        LinkedQueue<T> visitOrder;
+        private TreeIterator(BinarySearchTree t){
+            this.visitOrder = new LinkedQueue<T>();
+            this.add(t);
+        }
+
+        private void add(BinarySearchTree t){
+            if(t.left != null) add(t.left);
+            this.visitOrder.enqueue((T) t.data);
+            if(t.right != null) add(t.right);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.visitOrder.size() > 0;
+        }
+
+        public T peek(){
+            return this.visitOrder.getFront();
+        }
+
+        @Override
+        public Object next() {
+            return this.visitOrder.dequeue();
+        }
+    }
 
     public BinarySearchTree(){
         this.data = null;
@@ -106,17 +136,54 @@ public class BinarySearchTree<T extends Comparable<T>>{
         }
     }
 
+    public Iterator iterator(){
+        return new TreeIterator(this);
+    }
+
+    public BinarySearchTree<T> intersection(BinarySearchTree<T> other){
+        /*
+         * Finds the intersection between this tree and other
+         * Returns a new BinarySearchTree containing the intersection
+         */
+        BinarySearchTree<T> newTree = new BinarySearchTree<T>();
+        TreeIterator thisIterator = (TreeIterator)this.iterator();
+        TreeIterator otherIterator = (TreeIterator)other.iterator();
+        while(thisIterator.hasNext() && otherIterator.hasNext()){
+            if(thisIterator.peek().compareTo(otherIterator.peek()) < 0){
+                thisIterator.next();
+            } else if (thisIterator.peek().compareTo(otherIterator.peek()) > 0){
+                otherIterator.next();
+            } else {
+                newTree.add((T)thisIterator.next());
+                otherIterator.next();
+            }
+        }
+        return newTree;
+    }
+
     public static void main(String[] args){
         BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
         int[] arr = new int[]{10,5,17,19,15,13,8,3,9};
         for(int a : arr){
             tree.add(a);
         }
+        /*
         System.out.println(tree.contains(8));
         System.out.println(tree.contains(16));
         tree.remove(17);
         System.out.println(tree.contains(17));
         System.out.println(tree.contains(13));
         System.out.println(tree);
+        */
+        BinarySearchTree<Integer> tree2 = new BinarySearchTree<Integer>();
+        int[] arr2 = new int[]{5,9,13,16,18};
+        for(int a : arr2){
+            tree2.add(a);
+        }
+
+        BinarySearchTree<Integer> intersection = tree.intersection(tree2);
+        System.out.println(intersection);
+
+
     }
 }
