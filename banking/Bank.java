@@ -1,36 +1,58 @@
 package banking;
+import DataStructuresLib.MyTreeMap;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
-
-import DataStructuresLib.MyTreeMap;
+import java.util.TreeMap;
+import java.util.HashMap;
 
 public class Bank {
-    MyTreeMap<String,Double> balances;
+    HashMap<String,Double> balances;
 
     public Bank(File startingBalancesFile) throws FileNotFoundException{
         Scanner sc = new Scanner(startingBalancesFile);
         sc.nextLine(); // pass the header
         String line;
         String[] data;
+        balances = new HashMap<String,Double>();
         while(sc.hasNextLine()){
             line = sc.nextLine();
             // an array of length 2: name, balance
             data = line.split(",");
-            // TODO figure out how to deal with this data and add it to balances
+            String name = data[0];
+            Double balance = Double.parseDouble(data[1]);
+            balances.put(name, balance);
         }
     }
 
     public void processTransactions(File transactionsFile) throws FileNotFoundException{
         Scanner sc = new Scanner(transactionsFile);
         sc.nextLine(); // pass the header
-        String line;
+        String line, payor, payee;
+        Double amount, payorBalance, payeeBalance;
         String[] data;
         while(sc.hasNextLine()){
-            line = sc.nextLine();
-            // an array of length 4: id, payor, payee, amount
-            data = line.split(",");
-            // TODO figure out how to deal with this data and change balances
+            try{
+                line = sc.nextLine();
+                // an array of length 4: id, payor, payee, amount
+                data = line.split(",");
+                payor = data[1];
+                payee = data[2];
+                amount = Double.parseDouble(data[3]);
+            }catch(Exception e){
+                System.out.println(e);
+                e.printStackTrace();
+                continue;
+            }
+            // get the payor's balance
+            payorBalance = balances.get(payor);
+            // set the payor's balance to the previous balance - amount
+            balances.put(payor, payorBalance - amount);
+            // get the payee's balance
+            payeeBalance = balances.get(payee);
+            // set the payee's balance to the previous balance + amount
+            balances.put(payee, payeeBalance + amount);
         }
     }
 
@@ -45,13 +67,18 @@ public class Bank {
                                 + (endTime - startTime) * 1e-9 + " seconds");
             Scanner input = new Scanner(System.in);
             String name;
+            Double balance;
             do{
                 System.out.println("Whose balance would you like to check?");
-                name = input.nextLine();
-                if(name != "exit"){
-                    // TODO: print the balance
+                name = input.nextLine().strip();
+                if(!name.equals("exit")){
+                    if(myBank.balances.containsKey(name)){
+                        balance = myBank.balances.get(name);
+                        System.out.println("Your balance is: " + balance);
+                    }
+                    else System.out.println("Username not found");
                 }
-            } while(name != "exit");
+            } while(!name.equals("exit"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -74,7 +74,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable{
 
     public boolean contains(T query){
         if(this.data == null) return false;
-        if(query.equals(this.data)) return true;
+        if(query.compareTo(this.data) == 0) return true;
         if(query.compareTo(this.data) > 0){
             // right
             if(this.right == null) return false;
@@ -119,9 +119,24 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable{
         }
     }
 
-    public void remove(T data){
-        BinarySearchTree toRemove = getNode(data);
+    public T remove(T data){
+        BinarySearchTree<T> toRemove = getNode(data);
+        T value = toRemove.data;
         toRemove.removeAndShift();
+        return value;
+    }
+
+    public T get(T query){
+        int comparison = query.compareTo(this.data);
+        if(comparison == 0){
+            return this.data;
+        } else if(comparison < 0){
+            if(this.left == null) return null;
+            else return this.left.get(query);
+        } else {
+            if(this.right == null) return null;
+            else return this.right.get(query);
+        }
     }
 
     public String toString(){
@@ -181,9 +196,10 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable{
             tree2.add(a);
         }
 
-        BinarySearchTree<Integer> intersection = tree.intersection(tree2);
-        System.out.println(intersection);
-
+        //BinarySearchTree<Integer> intersection = tree.intersection(tree2);
+        //System.out.println(intersection);
+        System.out.println(tree.get(5));
+        System.out.println(tree.get(6));
 
     }
 }
